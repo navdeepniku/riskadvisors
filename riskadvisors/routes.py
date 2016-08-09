@@ -6,4 +6,4 @@ from riskadvisors import app
 @app.route('/')
 def home():
     redirect(url_for('home'))
-    return "hi"
+    return "hi"+$Database
