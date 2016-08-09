@@ -7,4 +7,4 @@ app = Flask(__name__)
 
 
 
-from flaskstruct import routes
+from riskadvisors import routes
