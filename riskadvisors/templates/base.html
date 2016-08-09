@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    
+	<body>
+		<div class="container">
+			
+			<!-- child template code goes here -->
+			{% block content %}{% endblock %}
+			
+			<!-- errors in code -->
+			{% if error %}
+				<p class="error alert alert-danger"><strong>Error:</strong>{{ error }}</p>
+			{% endif %}
+			
+			<!-- flash messages  -->
+			{% for message in get_flashed_messages()%}
+				<span>
+				<p class="alert alert-info">{{ message }}</p>
+				</span>
+			{% endfor %}
+			
+		</div>
+	</body>
+</html>
