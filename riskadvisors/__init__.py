@@ -42,7 +42,7 @@ def home():
 #from riskadvisors import routes
 
 #upload_folder = 'C://Users/navdeep/Documents/Github/riskadvisors/tmp/'
-upload_folder = "/"
+upload_folder = "/tmp/"
 app.config['UPLOAD_FOLDER'] = upload_folder
 
 @app.route('/file', methods=['GET','POST'])
@@ -63,7 +63,8 @@ def upload_file():
 @app.route('/test')
 def test():
     import wget
-    filename = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1")
+    filename = f1.xlsx
+    filename = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1",os.path.join(app.config['UPLOAD_FOLDER'],filename))
     return redirect(url_for('after_upload', filename = filename))
 
 @app.route('/after_upload/<filename>')
