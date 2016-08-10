@@ -51,7 +51,7 @@ def upload_file():
             </form>
             '''
     except:
-        return "error occourred! return to home:"
+        return "error occourred! return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 @app.route('/dropbox_handle/')
 def dropbox_handle():
     try:
@@ -61,7 +61,7 @@ def dropbox_handle():
         f = wget.download(file_url,os.path.join(app.config['UPLOAD_FOLDER'],filename))
         return redirect(url_for('after_upload', filename = filename))
     except:
-        return "Enter valid file url"
+        return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 
 
 @app.route('/after_upload/<filename>')
