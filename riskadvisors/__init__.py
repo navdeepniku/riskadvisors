@@ -45,16 +45,18 @@ app.config['UPLOAD_FOLDER'] = upload_folder
 
 @app.route('/file', methods=['GET','POST'])
 def upload_file():
-    if request.method == 'POST':
+    if request.method == 'POST' and  request.form['file_url'] != 'file_url':
+        file_url = request.form['file_url']
+        file_url = file_url[0:-1]+'1'
+        return redirect(url_for('dropbox_handle', file_url=file_url))
+
+    elif request.method == 'POST':
         file = request.files['file']
         filename  = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return redirect(url_for('after_upload', filename = filename))
     
-    if request.method == 'POST' and  request.form['file_url'] != 'file_url':
-        file_url = request.form['file_url']
-        file_url = file_url[0:-1]+'1'
-        return redirect(url_for('dropbox_handle', file_url=file_url))
+    
 
     return '''
         <!doctype html>
