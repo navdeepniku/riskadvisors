@@ -60,6 +60,12 @@ def upload_file():
                <input type=submit value=Upload>
         </form>
         '''
+@app.route('/test')
+def test():
+    import wget
+    file = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1")
+    return redirect(url_for('after_upload', filename = file))
+
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
     from openpyxl import load_workbook
