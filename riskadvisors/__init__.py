@@ -63,8 +63,7 @@ def upload_file():
 @app.route('/test')
 def test():
     import wget
-    filename=f.xlsx
-    file = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1","os.path.join(app.config['UPLOAD_FOLDER'],filename)")
+    filename = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1")
     return redirect(url_for('after_upload', filename = filename))
 
 @app.route('/after_upload/<filename>')
