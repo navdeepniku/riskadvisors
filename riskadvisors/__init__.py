@@ -69,10 +69,11 @@ def upload_file():
                <input type=submit value=Upload>
         </form>
         '''
-@app.route('/dropbox_handle/<file_url>')
-def dropbox_handle(file_url):
+@app.route('/dropbox_handle/')
+def dropbox_handle():
     try:
         import wget
+        file_url = request.args.get('file_url')
         filename = "f1.xlsx"
         f = wget.download(file_url,os.path.join(app.config['UPLOAD_FOLDER'],filename))
         return redirect(url_for('after_upload', filename = filename))
