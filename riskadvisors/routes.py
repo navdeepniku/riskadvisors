@@ -23,11 +23,11 @@ def home():
 @app.route('/file', methods=['GET','POST'])
 def upload_file():
     try:
-        if request.method == 'POST' and  request.form['file_url'] != 'file_url':
+        if request.method == 'POST' and  'file_url' in request.form:
             file_url = request.form['file_url']
             file_url = file_url[0:-1]+'1'
             return redirect(url_for('dropbox_handle', file_url=file_url))
-
+            
         elif request.method == 'POST':
             file = request.files['file']
             filename  = file.filename
@@ -51,7 +51,7 @@ def upload_file():
             </form>
             '''
     except:
-        return "error occourred! return to home:"+url_for('file')
+        return "error occourred! return to home:"
 @app.route('/dropbox_handle/')
 def dropbox_handle():
     try:
