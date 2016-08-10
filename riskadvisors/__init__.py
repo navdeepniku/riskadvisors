@@ -65,7 +65,7 @@ def test():
     import wget
     #file = wget.download("https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=1")
     #return redirect(url_for('after_upload', filename = file))
-    return os.system("pwd")
+    return os.system("date")
 
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
