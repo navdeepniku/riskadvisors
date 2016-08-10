@@ -42,7 +42,7 @@ def home():
 #from riskadvisors import routes
 
 #upload_folder = 'C://Users/navdeep/Documents/Github/riskadvisors/tmp/'
-upload_folder = /tmp/
+upload_folder = "/tmp/"
 app.config['UPLOAD_FOLDER'] = upload_folder
 
 @app.route('/file', methods=['GET','POST'])
