@@ -102,7 +102,7 @@ def after_upload(filename):
         #return 'done'
         return redirect(url_for('db_commit'), db_session=db_session)
 
-@app.route('db_commit')
+@app.route('/db_commit')
 def db_commit():
     db_session = request.args.get('db_session')
 
