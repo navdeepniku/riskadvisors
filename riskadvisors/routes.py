@@ -31,7 +31,7 @@ def upload_file():
             filename  = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             session['filename']=filename
-            return redirect(url_for('after_upload', filename = filename))
+            return redirect(url_for('after_upload'))
         
         
 
@@ -63,14 +63,15 @@ def dropbox_handle():
         filename = "f1.xlsx"
         f = wget.download(file_url,os.path.join(app.config['UPLOAD_FOLDER'],filename))
         session['filename']=filename
-        return redirect(url_for('after_upload', filename = filename))
+        return redirect(url_for('after_upload'))
     except:
         return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 
 
 
-@app.route('/after_upload/<filename>')
-def after_upload(filename):
+@app.route('/after_upload/')
+def after_upload():
+        filename=session['filename']
         from openpyxl import load_workbook
         wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
         #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
@@ -125,8 +126,6 @@ def db_commit():
         if handler_count>count-1:
             continue
         else:
-            #
-            
             handle_size_counter+=1
             if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
@@ -139,13 +138,9 @@ def db_commit():
             db_session.add(s)
             if handle_size_counter-1==handle_size:
                 break
-                #print 'yes upload'
-            #    db_session.commit()
-    
             print "session adds"
-    #
     print "found error"
-    session['handler_count']=handler_count+handle_size_counter
+    session['handler_count']=handler_count+session['handle_size']
     db_session.commit()
     return redirect(url_for('database_handler'))
 
