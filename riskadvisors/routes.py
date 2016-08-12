@@ -120,9 +120,11 @@ def db_commit():
         
     handler_count = session['handler_count']
     handle_size = session['handle_size']
-    count=0 
+    count=0
+    handle_size_counter=0
     for r in ws.rows:
         count+=1
+        handle_size_counter+=1
         if handler_count>count-1:
             continue
         else:
@@ -134,7 +136,7 @@ def db_commit():
                 cou+=1
                 
             db_session.add(s)
-            if count-1==handle_size:
+            if handle_size_counter-1==handle_size:
                 break
                 #print 'yes upload'
             #    db_session.commit()
