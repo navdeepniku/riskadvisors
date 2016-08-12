@@ -1,5 +1,5 @@
 from flask import url_for
-from flask import request, redirect
+from flask import request, redirect, session
 from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
 from sqlalchemy.orm import mapper, create_session, clear_mappers
 
@@ -63,7 +63,7 @@ class sheet(object):
 def after_upload(filename):
         from openpyxl import load_workbook
         wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
-        #wb = load_workbook(filename='C://users/navdeep/Desktop/stockdata.xlsx', read_only=True)
+        #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
         
         ws = wb.active
 
@@ -73,26 +73,37 @@ def after_upload(filename):
             for cell in row:
                 sheet_headers.append(cell.value)
             break
-        
-        return redirect(url_for('db_model'),sheet_headers=sheet_headers)
+        session['sheet_headers']=sheet_headers
+        return redirect(url_for('db_model'))
         
         
 @app.route('/db_model')
 def db_model():
-        sheet_headers = request.args.get('sheet_headers')
+        sheet_headers = session['sheet_headers']
         e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
         metadata = MetaData(bind=e)
         t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
-        clear_mappers() 
-        mapper(sheet, t)
-        return redirect(url_for('/db_commit'), db_session = create_session(bind=e, autocommit=False, autoflush=False))
+        
+        return redirect(url_for('db_commit'))
         
 
 @app.route('/db_commit')
 def db_commit():
-    db_session = request.args.get('db_session')
-
+    from openpyxl import load_workbook
+    wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
+    sheet_headers=session['sheet_headers']
+    
+    #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
+    ws = wb.active
+    e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    metadata = MetaData(bind=e)
+    t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
+        
+    clear_mappers() 
+    mapper(sheet, t)
+    db_session = create_session(bind=e, autocommit=False, autoflush=False)
+        
     count=0  
     for r in ws.rows:
         if count>0:
@@ -105,7 +116,7 @@ def db_commit():
                 #if count%100==0:
                 #    print 'yes upload'
                 #    db_session.commit()
-            count+=1
+        count+=1
 
         
     db_session.commit()
