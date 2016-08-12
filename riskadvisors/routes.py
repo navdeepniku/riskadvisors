@@ -80,7 +80,7 @@ def after_upload(filename):
             row_count+=1
         session['row_count'] = row_count;
         session['sheet_headers']=sheet_headers
-        session['handle_size']=5000
+        session['handle_size']=10000
         session['handler_count']=1
 
         return redirect(url_for('db_model'))
@@ -142,7 +142,7 @@ def db_commit():
             #    db_session.commit()
         
     
-    session['handler_count']=handler_count+session['handle_size']
+    session['handler_count']=handler_count-1+session['handle_size']
     db_session.commit()
     return redirect(url_for('database_handler'))
 
