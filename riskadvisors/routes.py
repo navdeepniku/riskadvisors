@@ -22,6 +22,7 @@ def upload_file():
             file = request.files['file']
             filename  = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            session['filename']=filename
             return redirect(url_for('after_upload', filename = filename))
         
         
@@ -51,6 +52,7 @@ def dropbox_handle():
         file_url = request.args.get('file_url')
         filename = "f1.xlsx"
         f = wget.download(file_url,os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        session['filename']=filename
         return redirect(url_for('after_upload', filename = filename))
     except:
         return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
