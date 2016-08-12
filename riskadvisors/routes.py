@@ -104,7 +104,6 @@ def db_model():
         clear_mappers() 
         mapper(sheet, t)
     
-        #return redirect(url_for('db_commit'))
         return redirect(url_for('database_handler'))
 
 @app.route('/db_commit')
@@ -121,12 +120,15 @@ def db_commit():
     handle_size = session['handle_size']
     count=0
     handle_size_counter=0
-    
+    #
+    print "before for"
     for r in ws.rows:
         count+=1
         if handler_count>count-1:
             continue
         else:
+            #
+            print "enters else"
             handle_size_counter+=1
             if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
@@ -140,8 +142,10 @@ def db_commit():
                 break
                 #print 'yes upload'
             #    db_session.commit()
-            #session adds
     
+            print "session adds"
+    #
+    print "found error"
     session['handler_count']=handler_count+handle_size_counter
     db_session.commit()
     return redirect(url_for('database_handler'))
@@ -160,10 +164,9 @@ def database_handler():
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
-            <h2>Completed '''+str((int(session['handler_count'])*100)/int(session['row_count']))+'''</h2>
+            <h2>Completed '''+str((int(session['handler_count'])*100)/int(session['row_count']))+'''%</h2>
             <form action="" method=post>
-                <input id="autoclick" type=submit value=Proceed>
-                <p>push this button otherwise world would end</p>
+                <input id="autoclick" style='visibility:hidden;' type=submit value=Proceed>
             </form>
             <script>
             document.getElementById("autoclick").click();
