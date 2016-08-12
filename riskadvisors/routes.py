@@ -97,7 +97,7 @@ def after_upload(filename):
 @app.route('/db_model')
 def db_model():
         sheet_headers = session['sheet_headers']
-        t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
+        t = Table(session[table_name], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         clear_mappers() 
         mapper(sheet, t)
