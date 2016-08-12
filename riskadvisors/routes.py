@@ -126,6 +126,7 @@ def db_commit():
         if handler_count>count-1:
             continue
         else:
+            if count%100==0: print count
             s = sheet()
             cou=0
             for c in r:
