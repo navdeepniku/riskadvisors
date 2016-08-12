@@ -11,8 +11,6 @@ e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 metadata = MetaData(bind=e)
 db_session = create_session(bind=e, autocommit=False, autoflush=False)    
 
-class sheet(object):
-    pass
 
 @app.route('/')
 def index():
@@ -173,3 +171,5 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
+class sheet(object):
+    pass
