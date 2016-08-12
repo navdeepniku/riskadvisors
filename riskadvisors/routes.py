@@ -98,4 +98,5 @@ def after_upload(filename):
         db_session.commit()
         
         return 'done'
-        
+    except: 
+        return 'after file upload failed'
