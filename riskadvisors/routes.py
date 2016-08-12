@@ -115,9 +115,9 @@ def db_commit():
                 setattr(s,sheet_headers[cou],c.value)
                 cou+=1
             db_session.add(s)
-                if count%1000==0:
-                #    print 'yes upload'
-                    db_session.commit()
+            if count%1000==0:
+                #print 'yes upload'
+                db_session.commit()
         count+=1
 
         
