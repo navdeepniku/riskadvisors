@@ -70,11 +70,14 @@ def after_upload(filename):
         ws = wb.active
 
         sheet_headers = []
-
+        row_count=0
         for row in ws.rows:
             for cell in row:
                 sheet_headers.append(cell.value)
             break
+        for row in ws.rows:
+            row_count+=1
+        session['row_count'] = row_count;
         session['sheet_headers']=sheet_headers
         return redirect(url_for('db_model'))
         
@@ -111,20 +114,44 @@ def db_commit():
     mapper(sheet, t)
     db_session = create_session(bind=e, autocommit=False, autoflush=False)
         
+    handler_count = session['handler_count']
     count=0  
     for r in ws.rows:
-        if count>0:
+        if handler_count>count:
+            continue
+        else:
             s = sheet()
             cou=0
             for c in r:
                 setattr(s,sheet_headers[cou],c.value)
                 cou+=1
             db_session.add(s)
-            if count%11000==0:
+            #if count%11000==0:
                 #print 'yes upload'
-                db_session.commit()
+            #    db_session.commit()
         count+=1
 
-        
+    session['handler_count']=handler_count+session['handle_size']
     db_session.commit()
-    return "done"
+    return redirect(url_for('database_handler'))
+
+handler_count=1
+@app.route("/database_handler")
+def database_handler():
+    
+
+    if request.method == 'POST' and  handler_count<session['row_count']:
+        return redirect(url_for('db_commit'))
+            
+    elif request.method == 'POST' and handler_count>=session['row_count']:
+        return "done"
+        
+
+    return  '''
+            <!doctype html>
+            <h1>Click proceed</h1>
+            <form action="" method=post>
+                <input type=submit value=Proceed>
+                <p>push this button otherwise world would end</p>
+            </form>
+            '''
