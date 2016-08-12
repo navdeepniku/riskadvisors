@@ -6,6 +6,9 @@ from sqlalchemy.orm import mapper, create_session, clear_mappers
 import os
 from riskadvisors import app,db
 
+e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+metadata = MetaData(bind=e)
+db_session = create_session(bind=e, autocommit=False, autoflush=False)    
 
 @app.route('/')
 def index():
@@ -89,19 +92,12 @@ def after_upload(filename):
 @app.route('/db_model')
 def db_model():
         sheet_headers = session['sheet_headers']
-        e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        metadata = MetaData(bind=e)
         t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         
         #return redirect(url_for('db_commit'))
-        return redirect(url_for('wait'))
+        return redirect(url_for('database_handler'))
 
-@app.route('/wait')
-def wait():
-
-    return "<a href='"+url_for('database_handler')+"' >click to proceed<a/>"
-        
 @app.route('/db_commit')
 def db_commit():
     from openpyxl import load_workbook
@@ -110,13 +106,10 @@ def db_commit():
     
     #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
-    e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-    metadata = MetaData(bind=e)
     t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
         
     clear_mappers() 
     mapper(sheet, t)
-    db_session = create_session(bind=e, autocommit=False, autoflush=False)
         
     handler_count = session['handler_count']
     handle_size = session['handle_size']
