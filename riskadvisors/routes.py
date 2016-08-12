@@ -6,6 +6,9 @@ from sqlalchemy.orm import mapper, create_session, clear_mappers
 import os
 from riskadvisors import app,db
 
+@app.route('/')
+def index():
+    return 'app running'
 
 @app.route('/file', methods=['GET','POST'])
 def upload_file():
