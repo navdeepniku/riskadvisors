@@ -89,7 +89,8 @@ def db_model():
         
         #return redirect(url_for('db_commit'))
         return redirect(url_for('wait'))
-app.route('/wait')
+
+@app.route('/wait')
 def wait():
 
     return "<a href='"+url_for('db_commit')+"' >click to proceed<a/>"
