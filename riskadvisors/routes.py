@@ -117,7 +117,8 @@ def db_commit():
     
     e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     metadata = MetaData(bind=e)
-    t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
+    tab=session['table_name']
+    t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
         
     clear_mappers() 
     mapper(sheet, t)
@@ -128,8 +129,6 @@ def db_commit():
     handle_size = session['handle_size']
     count=0
     handle_size_counter=0
-    #
-    print "before for"
     for r in ws.rows:
         count+=1
         if handler_count>count-1:
@@ -138,7 +137,6 @@ def db_commit():
             handle_size_counter+=1
             if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
-            print "enters else after sheet obj"
             cou=0
             for c in r:
                 setattr(s,sheet_headers[cou],c.value)
@@ -147,8 +145,6 @@ def db_commit():
             db_session.add(s)
             if handle_size_counter-1==handle_size:
                 break
-            print "session adds"
-    print "found error"
     session['handler_count']=handler_count+1+session['handle_size']
     db_session.commit()
     return redirect(url_for('database_handler'))
