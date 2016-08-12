@@ -100,7 +100,7 @@ def db_model():
 @app.route('/wait')
 def wait():
 
-    return "<a href='"+url_for('db_commit')+"' >click to proceed<a/>"
+    return "<a href='"+url_for('database_handler')+"' >click to proceed<a/>"
         
 @app.route('/db_commit')
 def db_commit():
@@ -140,7 +140,7 @@ def db_commit():
     db_session.commit()
     return redirect(url_for('database_handler'))
 
-@app.route("/database_handler")
+@app.route("/database_handler", methods=['GET','POST'])
 def database_handler():
     
 
