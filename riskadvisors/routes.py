@@ -65,8 +65,8 @@ class sheet(object):
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
         from openpyxl import load_workbook
-        #wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
-        wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
+        wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
+        #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
         
         ws = wb.active
 
@@ -105,10 +105,10 @@ def wait():
 @app.route('/db_commit')
 def db_commit():
     from openpyxl import load_workbook
-    #wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],session['filename']), read_only=True)
+    wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],session['filename']), read_only=True)
     sheet_headers=session['sheet_headers']
     
-    wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
+    #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
     e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     metadata = MetaData(bind=e)
