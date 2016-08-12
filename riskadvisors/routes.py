@@ -11,6 +11,9 @@ e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 metadata = MetaData(bind=e)
 db_session = create_session(bind=e, autocommit=False, autoflush=False)    
 
+class sheet(object):
+    pass
+
 @app.route('/')
 def index():
     return 'app running'
@@ -67,8 +70,6 @@ def dropbox_handle():
         return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 
 
-class sheet(object):
-    pass
 
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
@@ -157,9 +158,13 @@ def database_handler():
 
     return  '''
             <!doctype html>
-            <h1>Click proceed</h1>
+            <h1>Please Wait! Saving table to Database</h1>
+            <h2>Completed '''+(int(session['handler_count'])*100)/int(session['row_count'])+'''</h2>
             <form action="" method=post>
-                <input type=submit value=Proceed>
+                <input id="autoclick" type=submit value=Proceed>
                 <p>push this button otherwise world would end</p>
             </form>
+            <script>
+            document.getElementById("autoclick").click();
+            </script>
             '''
