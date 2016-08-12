@@ -142,7 +142,7 @@ def db_commit():
             #    db_session.commit()
             #session adds
     
-    session['handler_count']=handler_count+1+handle_size_counter
+    session['handler_count']=handler_count+handle_size_counter
     db_session.commit()
     return redirect(url_for('database_handler'))
 
