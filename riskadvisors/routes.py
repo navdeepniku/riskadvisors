@@ -135,7 +135,7 @@ def db_commit():
             continue
         else:
             handle_size_counter+=1
-            if count%100==0: print count,handle_size_counter,handle_size
+            #if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
             cou=0
             for c in r:
