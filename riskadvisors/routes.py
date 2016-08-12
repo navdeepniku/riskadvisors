@@ -105,3 +105,6 @@ def after_upload(filename):
 @app.route('db_commit')
 def db_commit():
     db_session = request.args.get('db_session')
+
+    db_session.commit()
+    return "done"
