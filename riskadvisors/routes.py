@@ -119,23 +119,27 @@ def db_commit():
     db_session = create_session(bind=e, autocommit=False, autoflush=False)
         
     handler_count = session['handler_count']
-    count=0  
+    handle_size = session['handle_size']
+    count=0 
     for r in ws.rows:
-        if handler_count>count:
+        count+=1
+        if handler_count>count-1:
             continue
         else:
+            print "entered else"
             s = sheet()
             cou=0
             for c in r:
                 setattr(s,sheet_headers[cou],c.value)
                 cou+=1
+                
             db_session.add(s)
             if count==handle_size:
                 break
                 #print 'yes upload'
             #    db_session.commit()
-        count+=1
-
+        
+    
     session['handler_count']=handler_count+session['handle_size']
     db_session.commit()
     return redirect(url_for('database_handler'))
