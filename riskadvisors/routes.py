@@ -1,23 +1,10 @@
 from flask import url_for
 from flask import request, redirect
+from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
+from sqlalchemy.orm import mapper, create_session, clear_mappers
 
 import os
-
-from riskadvisors import app
-
-
-@app.route('/')
-def home():
-    
-    '''u1 = User("email")
-
-    db.session.add(u1)
-    db.session.commit()
-    '''
-    us = User.query.all()
-    for u in us:
-        email=u.email
-    return "hi"+os.environ["Database"]+" email for u1 :"+email
+from riskadvisors import app,db
 
 
 @app.route('/file', methods=['GET','POST'])
@@ -40,8 +27,9 @@ def upload_file():
             <!doctype html>
             <h1>Upload Xlsx file</h1>
             <form action="" method=post enctype=multipart/form-data>
-                <p><input type=file name=file>
+                <p>Select File: <input type=file name=file>
                 <input type=submit value=Upload>
+                <p>For big files or slow upload speeds it is advised to use dropbox link option to prevent application timeout
             </form>
             <h2>OR</h2>
             <form action="" method=post>
@@ -52,6 +40,7 @@ def upload_file():
             '''
     except:
         return "error occourred! return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
+
 @app.route('/dropbox_handle/')
 def dropbox_handle():
     try:
@@ -64,14 +53,46 @@ def dropbox_handle():
         return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 
 
+class sheet(object):
+    pass
+
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
     try:
         from openpyxl import load_workbook
         wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
         ws = wb.active
+
+        sheet_headers = []
+
         for row in ws.rows:
             for cell in row:
-                return (cell.value)
-    except:
-        return "not a valid file"
+                sheet_headers.append(cell.value)
+            break
+        
+        e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+        t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
+        metadata.create_all()
+        clear_mappers() 
+        mapper(sheet, t)
+        db_session = create_session(bind=e, autocommit=False, autoflush=False)
+        
+        count=0  
+        for r in ws.rows:
+            if count>0:
+                s = sheet()
+                cou=0
+                for c in r:
+                    setattr(s,sheet_headers[cou],c.value)
+                    cou+=1
+                db_session.add(s)
+                if count%1000==0:
+                    print 'yes upload'
+                    db_session.commit()
+                
+            count+=1
+
+        db_session.commit()
+        
+        return 'done'
+        
