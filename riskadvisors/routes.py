@@ -159,7 +159,7 @@ def database_handler():
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
-            <h2>Completed '''+(int(session['handler_count'])*100)/int(session['row_count'])+'''</h2>
+            <h2>Completed '''+str((int(session['handler_count'])*100)/int(session['row_count']))+'''</h2>
             <form action="" method=post>
                 <input id="autoclick" type=submit value=Proceed>
                 <p>push this button otherwise world would end</p>
