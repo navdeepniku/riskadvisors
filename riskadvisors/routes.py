@@ -2,6 +2,7 @@ from flask import url_for
 from flask import request, redirect, session
 from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
 from sqlalchemy.orm import mapper, create_session, clear_mappers
+import uuid
 
 import os
 from riskadvisors import app,db
@@ -20,9 +21,11 @@ def upload_file():
         if request.method == 'POST' and  'file_url' in request.form:
             file_url = request.form['file_url']
             file_url = file_url[0:-1]+'1'
+            session['table_name']=request.form['table_name']
             return redirect(url_for('dropbox_handle', file_url=file_url))
             
         elif request.method == 'POST':
+            session['table_name']=request.form['table_name']
             file = request.files['file']
             filename  = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -36,6 +39,7 @@ def upload_file():
             <h1>Upload Xlsx file</h1>
             <form action="" method=post enctype=multipart/form-data>
                 <p>Select File: <input type=file name=file>
+                <p>Choose Table name to Store in Database: <input type=text name=table_name value='''+str(uuid.uuid4()).replace('-',"")+'''>
                 <input type=submit value=Upload>
                 <p>For big files or slow upload speeds it is advised to use dropbox link option to prevent application timeout
             </form>
@@ -43,6 +47,7 @@ def upload_file():
             <form action="" method=post>
                 <p> Enter Dropbox file url </p>
                 <p><input type=text name=file_url value=file_url> 
+                <p>Choose Table name to Store in Database: <input type=text name=table_name value='''+str(uuid.uuid4()).replace('-',"")+'''>
                 <input type=submit value=Upload>
             </form>
             '''
@@ -68,8 +73,8 @@ class sheet(object):
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
         from openpyxl import load_workbook
-        wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
-        #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
+        #wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
+        wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
         
         ws = wb.active
 
@@ -94,22 +99,21 @@ def db_model():
         sheet_headers = session['sheet_headers']
         t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
-        
+        clear_mappers() 
+        mapper(sheet, t)
+    
         #return redirect(url_for('db_commit'))
         return redirect(url_for('database_handler'))
 
 @app.route('/db_commit')
 def db_commit():
     from openpyxl import load_workbook
-    wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],session['filename']), read_only=True)
+    #wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],session['filename']), read_only=True)
     sheet_headers=session['sheet_headers']
     
-    #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
+    wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
-    t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
         
-    clear_mappers() 
-    mapper(sheet, t)
         
     handler_count = session['handler_count']
     handle_size = session['handle_size']
