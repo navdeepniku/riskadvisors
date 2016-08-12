@@ -128,10 +128,11 @@ def db_commit():
             continue
         else:
             #
-            print "enters else"
+            
             handle_size_counter+=1
             if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
+            print "enters else after sheet obj"
             cou=0
             for c in r:
                 setattr(s,sheet_headers[cou],c.value)
