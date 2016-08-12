@@ -121,6 +121,8 @@ def db_commit():
     handle_size = session['handle_size']
     count=0
     handle_size_counter=0
+    #
+    print "all good before for"
     for r in ws.rows:
         count+=1
         if handler_count>count-1:
@@ -139,10 +141,11 @@ def db_commit():
                 break
                 #print 'yes upload'
             #    db_session.commit()
-        
+            #session adds
     
     session['handler_count']=handler_count+1+session['handle_size']
     db_session.commit()
+    print "commit"
     return redirect(url_for('database_handler'))
 
 @app.route("/database_handler", methods=['GET','POST'])
