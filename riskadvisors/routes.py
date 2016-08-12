@@ -6,6 +6,7 @@ from sqlalchemy.orm import mapper, create_session, clear_mappers
 import os
 from riskadvisors import app,db
 
+
 @app.route('/')
 def index():
     return 'app running'
@@ -79,6 +80,9 @@ def after_upload(filename):
             row_count+=1
         session['row_count'] = row_count;
         session['sheet_headers']=sheet_headers
+        session['handle_size']=1000
+        session['handler_count']=1
+
         return redirect(url_for('db_model'))
         
         
@@ -126,7 +130,8 @@ def db_commit():
                 setattr(s,sheet_headers[cou],c.value)
                 cou+=1
             db_session.add(s)
-            #if count%11000==0:
+            if count==handle_size:
+                break
                 #print 'yes upload'
             #    db_session.commit()
         count+=1
@@ -135,15 +140,14 @@ def db_commit():
     db_session.commit()
     return redirect(url_for('database_handler'))
 
-handler_count=1
 @app.route("/database_handler")
 def database_handler():
     
 
-    if request.method == 'POST' and  handler_count<session['row_count']:
+    if request.method == 'POST' and  session['handler_count']<session['row_count']:
         return redirect(url_for('db_commit'))
             
-    elif request.method == 'POST' and handler_count>=session['row_count']:
+    elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         return "done"
         
 
