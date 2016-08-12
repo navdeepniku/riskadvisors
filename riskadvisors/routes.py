@@ -124,10 +124,10 @@ def db_commit():
     handle_size_counter=0
     for r in ws.rows:
         count+=1
-        handle_size_counter+=1
         if handler_count>count-1:
             continue
         else:
+            handle_size_counter+=1
             if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
             cou=0
