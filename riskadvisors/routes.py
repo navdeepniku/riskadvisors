@@ -87,9 +87,13 @@ def db_model():
         t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         
-        return redirect(url_for('db_commit'))
-        
+        #return redirect(url_for('db_commit'))
+        return redirect(url_for('wait'))
+app.route('/wait')
+def wait():
 
+    return "<a href='"+url_for('db_commit')+"' >click to proceed<a/>"
+        
 @app.route('/db_commit')
 def db_commit():
     from openpyxl import load_workbook
