@@ -61,9 +61,10 @@ class sheet(object):
 
 @app.route('/after_upload/<filename>')
 def after_upload(filename):
-    try:
         from openpyxl import load_workbook
         wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
+        #wb = load_workbook(filename='C://users/navdeep/Desktop/stockdata.xlsx', read_only=True)
+        
         ws = wb.active
 
         sheet_headers = []
@@ -74,6 +75,7 @@ def after_upload(filename):
             break
         
         e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+        metadata = MetaData(bind=e)
         t = Table('sheet', metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         clear_mappers() 
@@ -98,5 +100,3 @@ def after_upload(filename):
         db_session.commit()
         
         return 'done'
-    except: 
-        return 'after file upload failed'
