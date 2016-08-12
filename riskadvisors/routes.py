@@ -67,6 +67,8 @@ def dropbox_handle():
     except:
         return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
 
+class sheet(object):
+    pass
 
 
 @app.route('/after_upload/')
@@ -140,7 +142,7 @@ def db_commit():
                 break
             print "session adds"
     print "found error"
-    session['handler_count']=handler_count+session['handle_size']
+    session['handler_count']=handler_count+1+session['handle_size']
     db_session.commit()
     return redirect(url_for('database_handler'))
 
@@ -166,5 +168,3 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
-class sheet(object):
-    pass
