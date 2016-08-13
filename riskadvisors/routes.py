@@ -45,7 +45,7 @@ def upload_file():
             <h2>OR</h2>
             <form action="" method=post>
                 <p> Enter Dropbox file url </p>
-                <p><input type=text name=file_url value=file_url> 
+                <p><input type=text name=file_url value=https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=0> 
                 <p>Choose Table name to Store in Database: <input type=text name=table_name value='''+str(uuid.uuid4()).replace('-',"")+'''>
                 <input type=submit value=Upload>
             </form>
@@ -152,7 +152,10 @@ def database_handler():
         return redirect(url_for('db_commit'))
             
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
-        return "done"
+        #here
+        col_name="First Name"
+        acc = session.query(Sheet).filter_by(col_name='Navdeep').one()
+        return "done "+acc
         
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
     else: msg=''
