@@ -145,7 +145,7 @@ def db_commit():
             db_session.add(s)
             if handle_size_counter-1==handle_size:
                 break
-    session['handler_count']=handler_count+1+handle_size_counter
+    session['handler_count']=handler_count+handle_size_counter
     db_session.commit()
     return redirect(url_for('database_handler'))
 
