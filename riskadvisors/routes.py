@@ -159,11 +159,11 @@ def database_handler():
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         return "done"
         
-
+    if (int(session['handler_count'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
-            <p>'''+if (int(session['handler_count'])*100)/int(session['row_count'])<15: print "Looks like a big file, wait a minute"+'''</p>
+            <p>'''+msg+'''</p>
             <h2>Completed '''+str((int(session['handler_count'])*100)/int(session['row_count']))+'''%</h2>
             <form action="" method=post>
                 <input id="autoclick" style='visibility:hidden;' type=submit value=Proceed>
