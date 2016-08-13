@@ -154,7 +154,7 @@ def database_handler():
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         #here
         metadata = MetaData(bind=e)    
-        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']'))
+        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
         mapper(sheet, t)
         col_name="First Name"
