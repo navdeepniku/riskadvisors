@@ -72,7 +72,7 @@ def after_upload():
         return redirect(url_for('db_model'))
         
         
-@app.route('/db_model' methods=['GET','POST'])
+@app.route('/db_model', methods=['GET','POST'])
 def db_model():
         if request.method == 'POST':
             sheet_headers = session['sheet_headers']
@@ -168,12 +168,12 @@ def tableInfo():
             <h1>Table imported to Database</h1>
             <p>Filename: '''+session['filename']+'''</p>
             <p>Tablename: '''+session['table_name']+'''</p>
-            <p><a href=''''+url_for('queryDb')+''''>queryDb<a/></p>
+            <p><a href="'''+url_for('queryDb')+'''">queryDb<a/></p>
             '''
 
 @app.route("/queryDb")
 def queryDb():
-metadata = MetaData(bind=e)    
+        metadata = MetaData(bind=e)    
         t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
         mapper(sheet, t)
