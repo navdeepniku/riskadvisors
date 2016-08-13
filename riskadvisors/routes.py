@@ -121,6 +121,7 @@ def db_commit():
     tab=session['table_name']
         
     #db_session = create_session(bind=e, autocommit=False, autoflush=False)
+    t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
     clear_mappers() 
     mapper(sheet, t)
       
