@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="angularJsStub">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1 class="text-center">API to Transfer any Excel file to Database with table schema <small>For RiskAdvisors</small></h1>
+            <h6 class="text-center">This app dynamically parses table schema of excel sheet and saves it to a SQL database</h6>
+        </header>
+        <section class="container" style="align:center">
+            <div class="row text-center">
+                <div class="col-sm-6 col-md-4 col-md-offset-4">
+                    
+            <h4 class="text-center">Upload Xlsx file</h4>
+            <form class="form-horizontal" action="" method=post enctype=multipart/form-data>
+                
+                    <div class="form-group">
+                        <label>Select File</label>
+                        <input class="form-control" type='file' name=file>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Table name to Store in Database</label>
+                        <input class="form-control" type='text' name=table_name value= {{ table_name }} >
+                    </div>
+                    <button class="btn btn-default" type='submit'>Upload</button>
+                    <p>For big files or slow upload speeds it is advised to use dropbox link option to prevent application timeout</p>
+            
+            </form>
+            <h2>OR</h2>
+            <form class="form-horizontal" action="" method=post>
+                <div class="form-group">
+                    <label> Enter Dropbox file url </label>
+                    <input class="form-control" type='text' name=file_url value=https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=0> 
+                </div>
+                <div class="form-group">
+                    <label>Choose Table name to Store in Database: </label>
+                    <input class="form-control" type='text' name=table_name value= {{ table_name }} >
+                </div>
+                <button class="btn btn-default" type=submit>Submit</button>
+            </form>
+                </div>
+            </div>
+        </section>
+
+
+    <div ng-controller="PhoneSpecs as ph">
+        <div class="device row">
+            <h3>{{ph.device.ram|angular}}</h3>
+            <h3>{{ph.device.cpu|angular}}</h3>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/angular.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
+    </body>
+</html> 

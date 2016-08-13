@@ -1,5 +1,5 @@
 from flask import url_for
-from flask import request, redirect, session
+from flask import request, redirect, session, render_template
 from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
 from sqlalchemy.orm import mapper, create_session, clear_mappers
 import uuid
@@ -11,12 +11,8 @@ from riskadvisors import app,db
 e=create_engine(app.config['SQLALCHEMY_DATABASE_URI']) 
 db_session = create_session(bind=e, autocommit=False, autoflush=False)
     
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
-    return 'app running'
-
-@app.route('/file', methods=['GET','POST'])
-def upload_file():
     try:
         if request.method == 'POST' and  'file_url' in request.form:
             file_url = request.form['file_url']
@@ -31,29 +27,10 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             session['filename']=filename
             return redirect(url_for('after_upload'))
-        
-        
-
-        return '''
-            <!doctype html>
-            <h1>Upload Xlsx file</h1>
-            <form action="" method=post enctype=multipart/form-data>
-                <p>Select File: <input type=file name=file>
-                <p>Choose Table name to Store in Database: <input type=text name=table_name value='''+str(uuid.uuid4()).replace('-',"")+'''>
-                <input type=submit value=Upload>
-                <p>For big files or slow upload speeds it is advised to use dropbox link option to prevent application timeout
-            </form>
-            <h2>OR</h2>
-            <form action="" method=post>
-                <p> Enter Dropbox file url </p>
-                <p><input type=text name=file_url value=https://www.dropbox.com/s/zt1xyzqhqfdqxr0/Stock%20Data.xlsx?dl=0> 
-                <p>Choose Table name to Store in Database: <input type=text name=table_name value='''+str(uuid.uuid4()).replace('-',"")+'''>
-                <input type=submit value=Upload>
-            </form>
-            '''
+        return render_template('index.html', table_name=str(uuid.uuid4()).replace('-',""))
     except:
-        return "error occourred! return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
-
+        return "error occourred! return to home: <a href='"+url_for('index')+"'>Home<a/>"
+    
 @app.route('/dropbox_handle/')
 def dropbox_handle():
     try:
@@ -187,3 +164,8 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
+
+app.route("/queryDb")
+def queryDb():
+    
+    return 
