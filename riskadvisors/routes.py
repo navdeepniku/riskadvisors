@@ -7,9 +7,7 @@ import uuid
 import os
 from riskadvisors import app,db
 
-e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-metadata = MetaData(bind=e)
- 
+e=create_engine(app.config['SQLALCHEMY_DATABASE_URI']) 
 
 @app.route('/')
 def index():
@@ -102,6 +100,7 @@ def db_model():
         #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
         #metadata = MetaData(bind=e)
         t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
+        metadata = MetaData(bind=e)
         metadata.create_all()
         
         return redirect(url_for('database_handler'))
@@ -116,7 +115,7 @@ def db_commit():
     ws = wb.active
     
     tab=session['table_name']
-        
+    metadata = MetaData(bind=e)    
     db_session = create_session(bind=e, autocommit=False, autoflush=False)
     t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
     clear_mappers() 
