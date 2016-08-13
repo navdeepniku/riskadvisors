@@ -9,7 +9,6 @@ from riskadvisors import app,db
 
 e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 metadata = MetaData(bind=e)
-db_session = create_session(bind=e, autocommit=False, autoflush=False)
  
 
 @app.route('/')
