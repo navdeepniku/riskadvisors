@@ -121,7 +121,8 @@ def db_commit():
     tab=session['table_name']
         
     #db_session = create_session(bind=e, autocommit=False, autoflush=False)
-
+    clear_mappers() 
+    mapper(sheet, t)
       
     handler_count = session['handler_count']
     handle_size = session['handle_size']
