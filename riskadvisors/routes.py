@@ -119,7 +119,7 @@ def db_commit():
     
     tab=session['table_name']
         
-    #db_session = create_session(bind=e, autocommit=False, autoflush=False)
+    db_session = create_session(bind=e, autocommit=False, autoflush=False)
     
       
     handler_count = session['handler_count']
