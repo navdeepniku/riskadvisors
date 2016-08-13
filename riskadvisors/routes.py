@@ -41,7 +41,7 @@ def dropbox_handle():
         session['filename']=filename
         return redirect(url_for('after_upload'))
     except:
-        return "Enter valid file url"+" return to home: <a href='"+url_for('upload_file')+"'>File<a/>"
+        return "Enter valid file url"+" return to home: <a href='"+url_for('index')+"'>Home<a/>"
 
 class sheet(object):
     pass
@@ -72,16 +72,29 @@ def after_upload():
         return redirect(url_for('db_model'))
         
         
-@app.route('/db_model')
+@app.route('/db_model' methods=['GET','POST'])
 def db_model():
-        sheet_headers = session['sheet_headers']
-        tab=session['table_name']
-        #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        metadata = MetaData(bind=e)
-        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
-        metadata.create_all()
+        if request.method == 'POST':
+            sheet_headers = session['sheet_headers']
+            tab=session['table_name']
+            #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+            metadata = MetaData(bind=e)
+            t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
+            metadata.create_all()
+            
+            return redirect(url_for('database_handler'))
+            
+        return  '''
+            <!doctype html>
+            <h1>Creating Database Schema for Table</h1>
+            <form action="" method=post>
+                <input id="autoclick" style='visibility:hidden;' type=submit value=Proceed>
+            </form>
+            <script>
+            document.getElementById("autoclick").click();
+            </script>
+            '''
         
-        return redirect(url_for('database_handler'))
 
 @app.route('/db_commit')
 def db_commit():
