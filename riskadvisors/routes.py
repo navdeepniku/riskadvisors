@@ -1,6 +1,6 @@
 from flask import url_for
 from flask import request, redirect, session
-from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
+from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine, inspect
 from sqlalchemy.orm import mapper, create_session, clear_mappers
 import uuid
 
@@ -120,7 +120,7 @@ def db_commit():
     tab=session['table_name']
         
     db_session = create_session(bind=e, autocommit=False, autoflush=False)
-    
+    mapper = inspect(sheet)
       
     handler_count = session['handler_count']
     handle_size = session['handle_size']
