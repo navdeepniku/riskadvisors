@@ -3,6 +3,7 @@ from flask import request, redirect, session
 from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
 from sqlalchemy.orm import mapper, create_session, clear_mappers
 import uuid
+import json
 
 import os
 from riskadvisors import app,db
@@ -157,10 +158,21 @@ def database_handler():
         t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
         mapper(sheet, t)
-        col_name="First Name"
-        acc = session.query(sheet).filter_by(col_name='Navdeep').one()
-        return "done "+acc
         
+        query_var_byUser = 'Navdeep'
+        query_column_byUser = 'Name'
+        qargs = {query_column_byUser:query_var_byUser}
+        acc = db_session.query(sheet).filter_by(**qargs).all()
+        result_list=[]
+        for item in acc:
+            temp_dict={}
+            for head in sheet_headers:
+                temp_dict[head]=getattr(item,head)
+            result_list.append(temp_dict)
+        print result_list
+        return json.dumps(result_list)
+        
+
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
     else: msg=''
     return  '''
