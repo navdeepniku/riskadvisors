@@ -7,7 +7,10 @@ import uuid
 import os
 from riskadvisors import app,db
 
-
+e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+metadata = MetaData(bind=e)
+db_session = create_session(bind=e, autocommit=False, autoflush=False)
+ 
 
 @app.route('/')
 def index():
@@ -97,13 +100,13 @@ def after_upload():
 def db_model():
         sheet_headers = session['sheet_headers']
         tab=session['table_name']
-        e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        metadata = MetaData(bind=e)
+        #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+        #metadata = MetaData(bind=e)
         t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         clear_mappers() 
         mapper(sheet, t)
-    
+        
         return redirect(url_for('database_handler'))
 
 @app.route('/db_commit')
@@ -115,14 +118,9 @@ def db_commit():
     #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
     
-    e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-    metadata = MetaData(bind=e)
     tab=session['table_name']
-    t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers)) 
         
-    clear_mappers() 
-    mapper(sheet, t)
-    db_session = create_session(bind=e, autocommit=False, autoflush=False)
+    #db_session = create_session(bind=e, autocommit=False, autoflush=False)
 
       
     handler_count = session['handler_count']
