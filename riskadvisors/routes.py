@@ -158,7 +158,7 @@ def database_handler():
         return "done"
         
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
-    else: msg=None
+    else: msg=''
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
