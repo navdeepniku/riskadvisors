@@ -166,7 +166,7 @@ def database_handler():
         result_list=[]
         for item in acc:
             temp_dict={}
-            for head in sheet_headers:
+            for head in session['sheet_headers']:
                 temp_dict[head]=getattr(item,head)
             result_list.append(temp_dict)
         print result_list
