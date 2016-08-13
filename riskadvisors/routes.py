@@ -104,7 +104,8 @@ def db_model():
         #metadata = MetaData(bind=e)
         t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
-        
+        clear_mappers() 
+        mapper(sheet, t)
         return redirect(url_for('database_handler'))
 
 @app.route('/db_commit')
@@ -119,9 +120,7 @@ def db_commit():
     tab=session['table_name']
         
     #db_session = create_session(bind=e, autocommit=False, autoflush=False)
-    t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
-    clear_mappers() 
-    mapper(sheet, t)
+    
       
     handler_count = session['handler_count']
     handle_size = session['handle_size']
