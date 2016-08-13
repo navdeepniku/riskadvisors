@@ -159,7 +159,8 @@ def database_handler():
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         return "done"
         
-    if (int(session['handler_count'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
+    if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
+    else: msg=None
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
