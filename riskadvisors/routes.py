@@ -8,7 +8,8 @@ import os
 from riskadvisors import app,db
 
 e=create_engine(app.config['SQLALCHEMY_DATABASE_URI']) 
-
+db_session = create_session(bind=e, autocommit=False, autoflush=False)
+    
 @app.route('/')
 def index():
     return 'app running'
@@ -98,9 +99,8 @@ def db_model():
         sheet_headers = session['sheet_headers']
         tab=session['table_name']
         #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        #metadata = MetaData(bind=e)
-        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata = MetaData(bind=e)
+        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
         metadata.create_all()
         
         return redirect(url_for('database_handler'))
@@ -113,10 +113,9 @@ def db_commit():
     
     #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
-    
+
     tab=session['table_name']
     metadata = MetaData(bind=e)    
-    db_session = create_session(bind=e, autocommit=False, autoflush=False)
     t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
     clear_mappers() 
     mapper(sheet, t)
