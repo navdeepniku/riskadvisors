@@ -38,7 +38,7 @@ def dropbox_handle():
         file_url = request.args.get('file_url')
         filename = "f1.xlsx"
         f = wget.download(file_url,os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        session['filename']=filename
+        session['filename']=f
         return redirect(url_for('after_upload'))
     except:
         return "Enter valid file url"+" return to home: <a href='"+url_for('index')+"'>Home<a/>"
@@ -143,7 +143,7 @@ def database_handler():
         return redirect(url_for('db_commit'))
             
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
-        return redirect(url_for('tableInfo', filename=session['filename']))
+        return redirect(url_for('tableInfo'))
         
 
 
@@ -161,7 +161,7 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
-@app.route("/tableInfo/<filename>")
+@app.route("/tableInfo/")
 def tableInfo():
     return  '''
             <!doctype html>
