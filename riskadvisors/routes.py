@@ -163,6 +163,7 @@ def database_handler():
     return  '''
             <!doctype html>
             <h1>Please Wait! Saving table to Database</h1>
+            <p>'''+if (int(session['handler_count'])*100)/int(session['row_count'])<15: print "Looks like a big file, wait a minute"+'''</p>
             <h2>Completed '''+str((int(session['handler_count'])*100)/int(session['row_count']))+'''%</h2>
             <form action="" method=post>
                 <input id="autoclick" style='visibility:hidden;' type=submit value=Proceed>
