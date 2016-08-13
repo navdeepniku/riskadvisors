@@ -155,7 +155,7 @@ def database_handler():
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         #here
         metadata = MetaData(bind=e)    
-        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
+        t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
         mapper(sheet, t)
         
@@ -171,7 +171,7 @@ def database_handler():
             result_list.append(temp_dict)
         print result_list
         return json.dumps(result_list)
-        
+
 
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
     else: msg=''
