@@ -143,24 +143,8 @@ def database_handler():
         return redirect(url_for('db_commit'))
             
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
-        #here
-        metadata = MetaData(bind=e)    
-        t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
-        clear_mappers() 
-        mapper(sheet, t)
+        return redirect(url_for('tableInfo', filename=session['filename']))
         
-        query_var_byUser = 'Navdeep'
-        query_column_byUser = 'Name'
-        qargs = {query_column_byUser:query_var_byUser}
-        acc = db_session.query(sheet).filter_by(**qargs).all()
-        result_list=[]
-        for item in acc:
-            temp_dict={}
-            for head in session['sheet_headers']:
-                temp_dict[head]=getattr(item,head)
-            result_list.append(temp_dict)
-        print result_list
-        return json.dumps(result_list)
 
 
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
@@ -177,8 +161,32 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
+@app.route("/tableInfo/<filename>")
+def tableInfo():
+    return  '''
+            <!doctype html>
+            <h1>Table imported to Database</h1>
+            <p>Filename: '''+session['filename']+'''</p>
+            <p>Tablename: '''+session['table_name']+'''</p>
+            <p><a href=''''+url_for('queryDb')+''''>queryDb<a/></p>
+            '''
 
-app.route("/queryDb")
+@app.route("/queryDb")
 def queryDb():
-    
-    return 
+metadata = MetaData(bind=e)    
+        t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
+        clear_mappers() 
+        mapper(sheet, t)
+        
+        query_var_byUser = 1
+        query_column_byUser = 'id'
+        qargs = {query_column_byUser:query_var_byUser}
+        acc = db_session.query(sheet).filter_by(**qargs).all()
+        result_list=[]
+        for item in acc:
+            temp_dict={}
+            for head in session['sheet_headers']:
+                temp_dict[head]=getattr(item,head)
+            result_list.append(temp_dict)
+        print result_list
+        return json.dumps(result_list)
