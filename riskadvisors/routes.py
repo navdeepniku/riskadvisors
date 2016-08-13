@@ -153,8 +153,13 @@ def database_handler():
             
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
         #here
+        '''metadata = MetaData(bind=e)    
+        t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']'))
+        clear_mappers() 
+        mapper(sheet, t)
+        '''
         col_name="First Name"
-        acc = session.query(Sheet).filter_by(col_name='Navdeep').one()
+        acc = session.query(sheet).filter_by(col_name='Navdeep').one()
         return "done "+acc
         
     if (int(session['handle_size'])*100)/int(session['row_count'])<15: msg="Looks like a big file, wait a minute"
