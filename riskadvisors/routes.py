@@ -167,6 +167,7 @@ def queryPage():
 
 @app.route("/queryDb", methods=['GET','POST'])
 def queryDb():
+    try:
         metadata = MetaData(bind=e)    
         t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
@@ -175,8 +176,6 @@ def queryDb():
         print qu
         query_var_byUser = qu['col_value']
         query_column_byUser = qu['col_name']
-        if len(qu) == 0:
-            return "[{'Enter valid Entery':''}]"
         qargs = {query_column_byUser:query_var_byUser}
         acc = db_session.query(sheet).filter_by(**qargs).all()
         result_list=[]
@@ -187,6 +186,8 @@ def queryDb():
             result_list.append(temp_dict)
         
         print result_list
-        if len(result_list) == 0:
+        if result_list==[]:
             return "[{'No Records available for this Query':''}]"
         return jsonify(result_list), 200
+    finally:
+        return "[{'Enter valid Data':''}]"
