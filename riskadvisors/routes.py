@@ -174,6 +174,7 @@ def queryDb():
         clear_mappers() 
         mapper(sheet, t)
         qu = request.get_json()
+        print qu
         query_var_byUser = qu['col_value']
         query_column_byUser = qu['col_name']
         qargs = {query_column_byUser:query_var_byUser}
