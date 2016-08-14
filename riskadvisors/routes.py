@@ -142,7 +142,7 @@ def database_handler():
         return redirect(url_for('db_commit'))
             
     elif request.method == 'POST' and session['handler_count']>=session['row_count']:
-        return redirect(url_for('tableInfo'))
+        return redirect(url_for('queryPage'))
         
 
 
@@ -160,9 +160,7 @@ def database_handler():
             document.getElementById("autoclick").click();
             </script>
             '''
-@app.route("/tableInfo/")
-def tableInfo():
-    return  render_template('tableInfo.html')
+
 @app.route("/queryPage")
 def queryPage():
     return render_template('queryPage.html')
