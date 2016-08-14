@@ -15,7 +15,7 @@
 
                     <div ng-controller="QueryData">
                         <div class="device row">
-                            <div>{{lists}}</div>
+                            <div ng-init="datalist='list'">{{lists}}</div>
                             <div>{{ datalist|angular }}</div>
                         </div>
                     </div>
