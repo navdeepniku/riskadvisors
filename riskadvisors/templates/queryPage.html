@@ -14,16 +14,19 @@
                 <div class="col-sm-6 col-md-4 col-md-offset-4">
                     <div ng-init="queryUrl='https://riskadvisors.herokuapp.com{{ url_for('queryDb') }}' ", ng-controller="QueryData" >
                         <div class="device row" >
-                            <div ng-init="datalist='list'"></div>
                             
-                            <tr id='rid' ng-repeat="x in datalist | limitTo:1">
-                                <td ng-repeat="(key,value) in x">{{ key|angular }}</td>
-                            </tr>
-
-                            <tr id='rid' ng-repeat="x in datalist">
-                                <td ng-repeat="(key,value) in x">{{ value|angular }}</td>
-                            </tr>
-
+                            <div ng-repeat="ab in datalist | limitTo:1">
+                                <ul class="list-inline">
+                                    <li style="width:100px" ng-repeat="(key, value) in ab">
+                                        {{key}}
+                                    </li>
+                                </ul>
+                                <ul class="list-inline">
+                                    <li style="width:100px" ng-repeat="(key, value) in ab">
+                                        {{value}}
+                                    </li>
+                                </ul>
+  	                        </div>
 
                         </div>
                     </div>
