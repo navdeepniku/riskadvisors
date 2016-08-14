@@ -22,7 +22,7 @@
                         <select name="option" width="300px">
                             {% for header in session['sheet_headers'] %}
                                 <option value={{ header }}>{{header}}</option>"
-                            <% endfor %>
+                            {% endfor %}
                         </select>
                         </div>
                         <div class="form-group">
