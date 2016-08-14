@@ -186,9 +186,9 @@ def queryDb():
         acc = db_session.query(sheet).filter_by(**qargs).all()
         result_list=[]
         for item in acc:
-            temp_dict={}
+            temp_table=[]
             for head in session['sheet_headers']:
-                temp_dict[head]=getattr(item,head)
-            result_list.append(temp_dict)
+                temp_table.append(head,getattr(item,head))
+            result_list.append(temp_table)
         print result_list
         return jsonify(result_list), 200
