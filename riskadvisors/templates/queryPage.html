@@ -17,7 +17,7 @@
                             <div ng-init="datalist='list'">{{lists}}</div>
                             <div>{{ datalist|angular }}</div>
                             <ul>
-                                <li ng-repeat="x in datalist">
+                                <li ng-repeat="y in (x in datalist)">
                                     {{ x|angular }}
                                 </li>
                             </ul>
