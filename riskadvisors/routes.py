@@ -45,16 +45,14 @@ def dropbox_handle():
 class sheet(object):
     pass
 
-
 @app.route('/after_upload/')
 def after_upload():
         filename=session['filename']
+        #import excel module and read excel file
         from openpyxl import load_workbook
         wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],filename), read_only=True)
-        #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
-        
         ws = wb.active
-
+        
         sheet_headers = []
         row_count=0
         for row in ws.rows:
@@ -63,6 +61,8 @@ def after_upload():
             break
         for row in ws.rows:
             row_count+=1
+        #set handler size to prevent application timeout in database operation in heroku
+        #sends data in batches of handler_size
         session['row_count'] = row_count;
         session['sheet_headers']=sheet_headers
         session['handle_size']=5000
@@ -76,7 +76,6 @@ def db_model():
         if request.method == 'POST':
             sheet_headers = session['sheet_headers']
             tab=session['table_name']
-            #e=create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
             metadata = MetaData(bind=e)
             t = Table(tab, metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in sheet_headers))
             metadata.create_all()
@@ -101,7 +100,6 @@ def db_commit():
     wb = load_workbook(filename=os.path.join(app.config['UPLOAD_FOLDER'],session['filename']), read_only=True)
     sheet_headers=session['sheet_headers']
     
-    #wb = load_workbook(filename='C://users/navdeep/Desktop/book.xlsx', read_only=True)
     ws = wb.active
 
     tab=session['table_name']
@@ -120,7 +118,6 @@ def db_commit():
             continue
         else:
             handle_size_counter+=1
-            #if count%100==0: print count,handle_size_counter,handle_size
             s = sheet()
             cou=0
             for c in r:

@@ -7,7 +7,9 @@ import os
 
 #create application object
 app = Flask(__name__)
+#for typecasting angular and flask templating
 Triangle(app)
+
 
 app.config['SQLALCHEMY_DATABASE_URI']=DATABASE_URI
 app.config['UPLOAD_FOLDER'] = upload_folder
