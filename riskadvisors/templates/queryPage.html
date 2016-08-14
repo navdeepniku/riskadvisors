@@ -2,7 +2,7 @@
 <html ng-app="angularJsStub">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     </head>
     <body>
         <header>
@@ -40,14 +40,14 @@
                         <div class="device row" >
                             <div ng-init="datalist='list'"></div>
                             <div ng-repeat="ab in datalist | limitTo:1">
-                                <ul class="list-unstyled">
+                                <ul class="list-inline">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
                                         {{key|angular}}
                                     </li>
                                 </ul>
                             </div>
                             <div ng-repeat="ab in datalist">
-                                <ul class="list">
+                                <ul class="list-inline">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
                                         {{value|angular}}
                                     </li>
@@ -65,7 +65,7 @@
 
 
     
-    <script type="text/javascript" src="{{ url_for('static', filename='js/angular.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
     </body>
 </html>
