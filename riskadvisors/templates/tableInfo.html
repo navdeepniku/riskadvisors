@@ -15,6 +15,21 @@
                     <h6>Table imported to Database</h6>
                     <p>Filename: {{ session['filename'] }}</p>
                     <p>Tablename: {{ session['table_name'] }}</p>
+                    <h6>Query Table:</h6>
+                    <form class="form-horizontal" action="" method=post>
+                        <div class="form-group">
+                        <label>Select Column to query</label>
+                        <select>
+                            {{ for header in session['sheet_headers']: print "<option value="+header+">"+header+"</option>" }}
+                            
+                        </select>
+                        </div>
+                        <div class="form-group">
+                        <label>Enter Column Value: </label>
+                        <input type="text" name='col_value'>
+                        </div>
+                        <button class="btn btn-default" type=submit>Submit</button>
+                    </form>
             <a href=" {{ url_for('queryPage') }}">queryDb<a/>
                 </div>
             </div>
