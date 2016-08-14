@@ -15,7 +15,16 @@
                     <div ng-init="queryUrl='https://riskadvisors.herokuapp.com{{ url_for('queryDb') }}' ", ng-controller="QueryData" >
                         <div class="device row" >
                             <div ng-init="datalist='list'">{{lists}}</div>
-                            <div>{{ datalist|angular }}</div>
+                            <div ng-repeat="x in datalist">
+                            <ul ng-repeat="(key,value) in x">
+                                <li>{{key|angular}}</li>
+                            </ul>
+                            </div>
+                            <div ng-repeat="x in datalist">
+                            <ul ng-repeat="(key,value) in x">
+                                <li>{{value|angular}}</li>
+                            </ul>
+                            </div>
                         </div>
                     </div>
                     
