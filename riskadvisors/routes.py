@@ -167,8 +167,11 @@ def tableInfo():
             <h1>Table imported to Database</h1>
             <p>Filename: '''+session['filename']+'''</p>
             <p>Tablename: '''+session['table_name']+'''</p>
-            <p><a href="'''+url_for('queryDb')+'''">queryDb<a/></p>
+            <p><a href="'''+url_for('queryPage')+'''">queryDb<a/></p>
             '''
+@app.route("/queryPage")
+def queryPage():
+    return render_template('queryPage.html')
 
 @app.route("/queryDb")
 def queryDb():
