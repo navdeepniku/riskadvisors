@@ -20,6 +20,7 @@
                         <div class="form-group">
                         <label>Select Column to query</label>
                         <select name="option" width="300px">
+                                <option value=id>Id</option>
                             {% for header in session['sheet_headers'] %}
                                 <option value={{ header }}>{{header}}</option>"
                             {% endfor %}

@@ -10,9 +10,33 @@
             <h6 class="text-center">This app dynamically parses table schema of excel sheet and saves it to a SQL database</h6>
         </header>
         <section class="container" style="align:center">
-            <div class="row text-center">
+            <div class="row text-center" ng-controller="QueryData">
+                
+                <div class="col-sm-6 col-md-4 col-md-offset-4">
+                    <h6>Table imported to Database</h6>
+                    <p>Filename: {{ session['filename'] }}</p>
+                    <p>Tablename: {{ session['table_name'] }}</p>
+                    <h6>Query Table:</h6>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                        <label>Select Column to query</label>
+                        <select name="col_name" width="300px" ng-model="col_name">
+                                <option value=id>Id</option>
+                            {% for header in session['sheet_headers'] %}
+                                <option value={{ header }}>{{header}}</option>"
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <div class="form-group">
+                        <label>Enter Column Value: </label>
+                        <input type="text" name='col_value' ng-model="col_value">
+                        </div>
+                        <button ng-click="query()" class="btn btn-default" type=submit>Submit</button>
+                    </form>
+                </div>
+                
                 <div class="">
-                    <div ng-init="queryUrl='https://riskadvisors.herokuapp.com{{ url_for('queryDb') }}' ", ng-controller="QueryData" >
+                    <div  >
                         <div class="device row" >
                             <div ng-init="datalist='list'"></div>
                             <div ng-repeat="ab in datalist | limitTo:1">

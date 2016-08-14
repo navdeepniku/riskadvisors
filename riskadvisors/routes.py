@@ -174,8 +174,8 @@ def queryDb():
         clear_mappers() 
         mapper(sheet, t)
         qu = request.get_json()
-        query_var_byUser = qu['1']
-        query_column_byUser = qu['id']
+        query_var_byUser = qu['col_value']
+        query_column_byUser = qu['col_name']
         qargs = {query_column_byUser:query_var_byUser}
         acc = db_session.query(sheet).filter_by(**qargs).all()
         result_list=[]
