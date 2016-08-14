@@ -179,9 +179,9 @@ def queryDb():
         t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
         clear_mappers() 
         mapper(sheet, t)
-        
-        query_var_byUser = 1
-        query_column_byUser = 'id'
+        qu = request.get_json()
+        query_var_byUser = qu['1']
+        query_column_byUser = qu['id']
         qargs = {query_column_byUser:query_var_byUser}
         acc = db_session.query(sheet).filter_by(**qargs).all()
         result_list=[]
