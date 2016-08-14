@@ -173,7 +173,7 @@ def tableInfo():
 def queryPage():
     return render_template('queryPage.html')
 
-@app.route("/queryDb")
+@app.route("/queryDb", methods=['GET','POST'])
 def queryDb():
         metadata = MetaData(bind=e)    
         t = Table(session['table_name'], metadata, Column('id', Integer, primary_key=True),*(Column(header, String(8000)) for header in session['sheet_headers']))
