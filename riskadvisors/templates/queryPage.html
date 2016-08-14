@@ -18,12 +18,12 @@
                             <div ng-repeat="ab in datalist | limitTo:1">
                                 <ul class="list-inline">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
-                                        {{key}}
+                                        {{key|angular}}
                                     </li>
                                 </ul>
                                 <ul class="list-inline">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
-                                        {{value}}
+                                        {{value|angular}}
                                     </li>
                                 </ul>
   	                        </div>
