@@ -27,13 +27,16 @@
                             </div>
 
                             <div>{{ datalist|angular }}</div>
-                                <div ng-repeat="x in datalist">
-                                    <ul>
-                                        <li ng-repeat="y in x" >
-                                            {{ y|angular }}
-                                        </li>
-                                    </ul>
-                                </div>
+                        
+                        <tr id='rid' ng-repeat="x in datalist | limitTo:1">
+                            <td ng-repeat="(key,value) in x">{{ key|angular }}</td>
+                        </tr>
+
+                        <tr id='rid' ng-repeat="x in datalist">
+                            <td ng-repeat="(key,value) in x">{{ value|angular }}</td>
+                        </tr>
+
+
                         </div>
                     </div>
                     
