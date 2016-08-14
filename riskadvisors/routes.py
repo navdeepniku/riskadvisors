@@ -162,13 +162,7 @@ def database_handler():
             '''
 @app.route("/tableInfo/")
 def tableInfo():
-    return  '''
-            <!doctype html>
-            <h1>Table imported to Database</h1>
-            <p>Filename: '''+session['filename']+'''</p>
-            <p>Tablename: '''+session['table_name']+'''</p>
-            <p><a href="'''+url_for('queryPage')+'''">queryDb<a/></p>
-            '''
+    return  render_template('tableInfo.html')
 @app.route("/queryPage")
 def queryPage():
     return render_template('queryPage.html')
