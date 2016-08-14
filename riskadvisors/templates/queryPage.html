@@ -17,7 +17,7 @@
                     <p>Filename: {{ session['filename'] }}</p>
                     <p>Tablename: {{ session['table_name'] }}</p>
                     <h6>Query Table:</h6>
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" ng-submit="query()">
                         <div class="form-group">
                         <label>Select Column to query</label>
                         <select name="col_name" width="300px" ng-model="col_name">
@@ -31,7 +31,7 @@
                         <label>Enter Column Value: </label>
                         <input type="text" name='col_value' ng-model="col_value">
                         </div>
-                        <button ng-click="query({$col_name, $col_Value})" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn btn-default">Submit</button>
                     </form>
                 </div>
                 
