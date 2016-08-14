@@ -1,8 +1,8 @@
 (function(){
     var app = angular.module('angularJsStub', [ ]);
-
+    var = queryUrl;
     app.controller('QueryData', function($scope,$http){
-        $http.get( {{ url_for('queryDb') }} ).then(function mySucces(response) {
+        $http.get( queryUrl ).then(function mySucces(response) {
             $scope.datalist = response.data;
         }, function myError(response){
             $scope.datalist = response.statusText;
