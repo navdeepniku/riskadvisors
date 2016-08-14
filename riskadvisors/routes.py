@@ -175,6 +175,8 @@ def queryDb():
         print qu
         query_var_byUser = qu['col_value']
         query_column_byUser = qu['col_name']
+        if len(qu) == 0:
+            return "[{'Enter valid Entery':''}]"
         qargs = {query_column_byUser:query_var_byUser}
         acc = db_session.query(sheet).filter_by(**qargs).all()
         result_list=[]
@@ -183,6 +185,8 @@ def queryDb():
             for head in session['sheet_headers']:
                 temp_dict[head]=getattr(item,head)
             result_list.append(temp_dict)
-
+        
         print result_list
+        if len(result_list) == 0:
+            return "[{'No Records available for this Query':''}]"
         return jsonify(result_list), 200
