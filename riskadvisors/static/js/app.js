@@ -1,6 +1,6 @@
 (function(){
     var app = angular.module('angularJsStub', [ ]);
-    var querypass = {col_value:'1',col_name:'id'};
+    
     app.controller('QueryData',function($scope,$http){
         $scope.query = function () {
             
