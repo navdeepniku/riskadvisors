@@ -40,14 +40,14 @@
                         <div class="device row" >
                             <div ng-init="datalist='list'"></div>
                             <div ng-repeat="ab in datalist | limitTo:1">
-                                <ul class="list-inline">
+                                <ul class="list-unstyled">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
                                         {{key|angular}}
                                     </li>
                                 </ul>
                             </div>
                             <div ng-repeat="ab in datalist">
-                                <ul class="list-inline">
+                                <ul class="list">
                                     <li style="width:100px" ng-repeat="(key, value) in ab">
                                         {{value|angular}}
                                     </li>
