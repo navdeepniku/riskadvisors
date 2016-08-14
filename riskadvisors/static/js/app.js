@@ -1,7 +1,7 @@
 (function(){
     var app = angular.module('angularJsStub', [ ]);
     var querypass = {col_value:'1',col_name:'id'};
-    app.controller('QueryData',['$scope', function($scope,$http){
+    app.controller('QueryData',[function($scope,$http){
 
         $scope.query = function () {
             var qdata = {
@@ -20,16 +20,6 @@
         });
         }
 
-        $http({
-            url: '/queryDb',
-            method: "POST",
-            data: querypass
-        }).then(function mySuccess(response) {
-            $scope.datalist = response.data;
-        }, function myError(response){
-            $scope.datalist = response.statusText;
-        });
-
-    }]);
+        }]);
 
 })();
