@@ -7,7 +7,7 @@
             $http({
             url: '/queryDb',
             method: "POST",
-            data: {col_name: $scope.userName, col_value: $scope.password}
+            data: {col_name: $scope.col_name, col_value: $scope.col_value}
         }).then(function mySuccess(response) {
             $scope.datalist = response.data;
         }, function myError(response){
