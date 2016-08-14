@@ -1,9 +1,8 @@
 from flask import url_for
-from flask import request, redirect, session, render_template
+from flask import request, redirect, session, render_template, jsonify
 from sqlalchemy import Table, Column, Integer, String, MetaData, create_engine
 from sqlalchemy.orm import mapper, create_session, clear_mappers
 import uuid
-import json
 
 import os
 from riskadvisors import app,db
@@ -189,4 +188,4 @@ def queryDb():
                 temp_dict[head]=getattr(item,head)
             result_list.append(temp_dict)
         print result_list
-        return json.dumps(result_list)
+        return jsonify(result_list), 200
