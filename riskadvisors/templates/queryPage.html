@@ -16,6 +16,11 @@
                         <div class="device row" >
                             <div ng-init="datalist='list'">{{lists}}</div>
                             <div>{{ datalist|angular }}</div>
+                            <ul>
+                                <li ng-repeat="x in datalist">
+                                    {{ x|angular }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     
