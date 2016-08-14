@@ -187,7 +187,7 @@ def queryDb():
         
         print result_list
         if result_list==[]:
-            return jsonify[{"No Records available for this Query":""}]), 200
+            return jsonify([{"No Records available for this Query":""}]), 200
         return jsonify(result_list), 200
     except:
         return jsonify([{"Enter valid Data":""}]), 200
