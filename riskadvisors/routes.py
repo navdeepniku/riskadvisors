@@ -65,7 +65,7 @@ def after_upload():
         #sends data in batches of handler_size
         session['row_count'] = row_count;
         session['sheet_headers']=sheet_headers
-        session['handle_size']=5000
+        session['handle_size']=1000
         session['handler_count']=1
 
         return redirect(url_for('db_model'))
